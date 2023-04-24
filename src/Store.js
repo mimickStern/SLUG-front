@@ -11,7 +11,7 @@ const initialState = {
       : {},
     paymentMethod: localStorage.getItem("paymentMethod")
       ? JSON.parse(localStorage.getItem("paymentMethod"))
-      : " ",
+      : null,
     cartItems: localStorage.getItem("cartItems")
       ? JSON.parse(localStorage.getItem("cartItems"))
       : [],
@@ -38,7 +38,8 @@ function reducer(state, action) {
 
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
 
-      return { ...state, cart: { ...state.cart, cartItems } }; // Return a new state object with an updated cart object that has the updated cartItems array
+      return { ...state, cart: { ...state.cart, cartItems } 
+    }; // Return a new state object with an updated cart object that has the updated cartItems array
 
     case "CART_REMOVE_ITEM": {
       const cartItems = state.cart.cartItems.filter(
@@ -49,7 +50,8 @@ function reducer(state, action) {
     }
 
     case "CART_CLEAR":
-      return { ...state, cart: { ...state.cart, cartItems: []}};
+      return { ...state, cart: { ...state.cart, cartItems: []}
+    };
 
     case "USER_SIGNIN": {
       return { ...state, userInfo: action.payload };

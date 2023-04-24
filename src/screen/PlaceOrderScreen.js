@@ -13,6 +13,19 @@ import { getError } from "../utils.js";
 import { toast } from "react-toastify";
 import LoadingBox from "../components/LoadingBox";
 
+const reducer = (state, action) => {
+    switch (action.type) {
+      case "CREATE_REQUEST":
+        return { ...state, loading: true };
+      case "CREATE_SUCCESS":
+        return { ...state, loading: false };
+      case "CREATE_FAIL":
+        return { ...state, loading: false };
+      default:
+        return state;
+    }
+  };
+
 const PlaceOrderScreen = () => {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -27,18 +40,7 @@ const PlaceOrderScreen = () => {
   cart.taxPrice = roundTotal(0.15 * cart.itemsPrice);
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
 
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case "CREATE_REQUEST":
-        return { ...state, loading: true };
-      case "CREATE_SUCCESS":
-        return { ...state, loading: false };
-      case "CREATE_FAIL":
-        return { ...state, loading: false };
-      default:
-        return state;
-    }
-  };
+  
 
   const [{ loading }, dispatch] = useReducer(reducer, {
     loading: false,
@@ -69,6 +71,7 @@ const PlaceOrderScreen = () => {
       dispatch({ type: "CREATE_SUCCESS" });
       localStorage.removeItem("cartItems");
       navigate(`/order/${data.order._id}`);
+
     } catch (err) {
       dispatch({ type: "CREATE_FAIL" });
       toast.error(getError(err));
@@ -76,6 +79,7 @@ const PlaceOrderScreen = () => {
   };
 
   useEffect(() => {
+    console.log(cart.paymentMethod)
     if (!cart.paymentMethod) {
       navigate("/payment");
     }
