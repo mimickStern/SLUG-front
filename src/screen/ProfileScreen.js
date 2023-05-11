@@ -56,6 +56,7 @@ const ProfileScreen = () => {
     setRandomCode(generateCode(5));
   }, []);
   console.log(email)
+  
   const sendCode = () => {
     console.log(email)
     if (email !== userInfo.email) {

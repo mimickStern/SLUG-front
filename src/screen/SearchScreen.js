@@ -69,15 +69,23 @@ export const ratings = [
 
 const SearchScreen = () => {
   const navigate = useNavigate();
-  const { search } = useLocation();
+  // const all = useLocation();
+  // console.log(all)
+
+  const {search}  = useLocation();
+  console.log(search)
+
   const sp = new URLSearchParams(search);
-  console.log(sp.get("price"));
+  console.log(sp)
+  
   const category = sp.get("category") || "all";
   const query = sp.get("query") || "all";
   const price = sp.get("price") || "all";
   const rating = sp.get("rating") || "all";
   const order = sp.get("order") || "lowest";
   const page = sp.get("page") || 1;
+  console.log(category, price, query, rating, order, page)
+
 
   const [{ loading, error, products, pages, countProducts }, dispatch] =
     useReducer(reducer, {
@@ -103,6 +111,7 @@ const SearchScreen = () => {
   }, [category, error, order, page, price, query, rating]);
 
   const [categories, setCategories] = useState([]);
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -123,9 +132,10 @@ const SearchScreen = () => {
     const filterRating = filter.rating || rating;
     const filterPrice = filter.price || price;
     const sortOrder = filter.order || order;
-    console.log(filterPrice);
+    console.log(filterPage, filterCategory, filterQuery, filterRating, filterPrice, sortOrder);
     return `/search?category=${filterCategory}&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
   };
+
   return (
     <div>
       <Helmet>
@@ -239,7 +249,7 @@ const SearchScreen = () => {
                   </Col>
                 ))}
               </Row>
-
+              
               <div>
                 {[...Array(pages).keys()].map((x) => (
                   <Link

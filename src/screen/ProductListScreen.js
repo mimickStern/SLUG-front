@@ -60,6 +60,7 @@ const ProductListScreen = () => {
   const navigate = useNavigate();
   const { search } = useLocation();
   const sp = new URLSearchParams(search);
+  console.log(sp)
   const page = sp.get("page") || 1;
 
   const { state } = useContext(Store);
@@ -127,7 +128,9 @@ const ProductListScreen = () => {
         });
 
         dispatch({ type: "FETCH_SUCCESS", payload: data });
-      } catch (err) {}
+      } catch (err) {
+        dispatch({ type: "FETCH_FAIL", payload: getError(err) });
+      }
     };
     if (successDelete) {
       dispatch({ type: "DELETE_RESET" });
